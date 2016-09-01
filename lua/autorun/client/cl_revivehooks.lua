@@ -1,0 +1,16 @@
+
+net.Receive( "SayReviveDown", function()
+	local number = net.ReadInt()
+	whatsmyname()
+	timer.Simple( 0.9, function()
+		sound.Play( "sound/path"..charactername.."sound/path"..number..".ogg", self:GetPos(), 75, 100, 1 )
+	end )
+end )
+
+net.Receive( "SayReviveUp", function()
+	local number = net.ReadInt()
+	whatsmyname()
+	timer.Simple( 0.9, function()
+		sound.Play( "sound/path"..charactername.."sound/path"..number..".ogg", self:GetPos(), 75, 100, 1 )
+	end )
+end )
