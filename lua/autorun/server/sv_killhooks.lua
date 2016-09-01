@@ -7,10 +7,11 @@ util.AddNetworkString( "ExplosiveKill" )
 util.AddNetworkString( "Insta" )
 util.AddNetworkString( "Raygun" )
 util.AddNetworkString( "Thundergun" )
---util.AddNetworkString( "" )
+util.AddNetworkString( "Killstreak" )
+
 hook.Add( "", "VariousZombieKills", function( zombie, ply, dmginfo, hitgroup )
 	if ply:IsPlayer() and !timer.Exists( ply:SteamID().."timer" ) then
-		
+		ply.killstreak = ply.killstreak + 1
 		if zombie == "nz_zombie_walker" then
 			if table.HasValue( validplayers, ply ) then
 				--Start regular zombie dialogue
@@ -62,8 +63,19 @@ hook.Add( "", "VariousZombieKills", function( zombie, ply, dmginfo, hitgroup )
 					end )
 					return
 				end
-				--[[Then if you're on a killstreak...
-				if ply.killstreak == ]]
+				--Then if you're on a killstreak...
+				local killstreaks = { 25, 50, 75, 100, 125, 150, 175, 200, 225, 250, 275, 300 }
+				if killstreaks[ply.killstreak] then --Do I need table.HasValue()?
+					timer.Create( ply:SteamID().."timer", 0.1, 1, function()
+						net.Start( "Killsreak" )
+							net.WriteInt( math.random( 1, 14 ), 5 ) --There are 14 quotes from each character
+						net.Send( ply )
+						timer.Simple( 5, function()
+							timer.Remove( ply:SteamID().."timer" )
+						end )
+					end )
+					return
+				end
 				--//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				--//The rest of these are only going to be chance-based (currently 25%), so as to avoid dialogue spamming (despite how much it may or may not add to the game)//
 				--//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,6 +91,7 @@ hook.Add( "", "VariousZombieKills", function( zombie, ply, dmginfo, hitgroup )
 							timer.Remove( ply:SteamID().."timer" )
 						end )
 					end )
+					return
 				end
 				--Then if instakill is active...
 				if nzPowerUps:IsPowerupActive( "insta" ) then
@@ -90,6 +103,7 @@ hook.Add( "", "VariousZombieKills", function( zombie, ply, dmginfo, hitgroup )
 							timer.Remove( ply:SteamID().."timer" )
 						end )
 					end )
+					return
 				end
 				--Then if you're using the raygun...
 				if ply:GetActiveWeapon() == "insert_raygun_class_here" then
@@ -101,6 +115,7 @@ hook.Add( "", "VariousZombieKills", function( zombie, ply, dmginfo, hitgroup )
 							timer.Remove( ply:SteamID().."timer" )
 						end )
 					end )
+					return
 				end
 				--Then if you're using the thundergun...
 				if ply:GetActiveWeapon() == "insert_thundergun_class_here" then
@@ -112,6 +127,7 @@ hook.Add( "", "VariousZombieKills", function( zombie, ply, dmginfo, hitgroup )
 							timer.Remove( ply:SteamID().."timer" )
 						end )
 					end )
+					return
 				end
 				--Here's the template for future weapons...
 				if ply:GetActiveWeapon() == "insert_gun_class_here" then
@@ -123,6 +139,7 @@ hook.Add( "", "VariousZombieKills", function( zombie, ply, dmginfo, hitgroup )
 							timer.Remove( ply:SteamID().."timer" )
 						end )
 					end )
+					return
 				end
 				--End regular zombie dialogue
 			end
