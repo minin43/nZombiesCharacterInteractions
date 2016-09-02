@@ -2,7 +2,7 @@
 net.Receive( "SayNoPower", function()
 	local number = net.ReadInt()
 	whatsmyname()
-	sound.Play( "sound/path"..charactername.."sound/path"..number..".ogg", self:GetPos(), 75, 100, 1 )
+	sound.Play( "nz/"..charactername.."sound/path"..number..".ogg", self:GetPos(), 75, 100, 1 )
 end )
 
 local currentround
@@ -19,7 +19,7 @@ net.Receive( "SayDogSpawn", function()
 	whatsmyname()
 	if currentround == "dogs" then
 		timer.Simple( 3, function()
-			sound.Play( "sound/path"..charactername.."sound/path"..number..".ogg", self:GetPos(), 75, 100, 1 )
+			sound.Play( "nz/"..charactername.."sound/path"..number..".ogg", self:GetPos(), 75, 100, 1 )
 		end )
 	end
 end )
