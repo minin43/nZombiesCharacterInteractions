@@ -1,12 +1,58 @@
-local function typeofweapon( wep )
-    local weapontypes = {
-        
-    }
-end
 
-util.AddNetworkString( "PurchaseSuccess" )
+local sounds = { 
+    ["bowie"] = { "bowie1.ogg", "bowie2.ogg", "bowie3.ogg", "bowie4.ogg", "bowie5.ogg" },
+    ["pistol"] = { "crappy1.ogg", "crappy2.ogg", "crappy3.ogg", "crappy4.ogg", "crappy5.ogg", "crappy6.ogg" }, --crappy
+    ["dual"] = { "dual1.ogg", "dual2.ogg", "dual3.ogg", "dual4.ogg", "dual5.ogg" },
+    ["fire"] = { "fire1.ogg", "fire2.ogg", "fire3.ogg", "fire4.ogg", "fire5.ogg", "fire6.ogg" },
+    ["launcher"] = { "launcher1.ogg", "launcher2.ogg", "launcher3.ogg" },
+    ["machine"] = { "mg1.ogg", "mg2.ogg", "mg3.ogg", "mg4.ogg", "mg5.ogg", "mg6.ogg", "mg7.ogg", "mg8.ogg", "mg9.ogg" },
+    ["monkey"] = { "monkey1.ogg", "monkey2.ogg", "monkey3.ogg", "monkey4.ogg", "monkey5.ogg" },
+    ["raygun"] = { "raygun1.ogg", "raygun2.ogg", "raygun3.ogg", "raygun4.ogg", "raygun5.ogg", "raygun6.ogg" },
+    ["shotgun"] = { "shotgun1.ogg", "shotgun2.ogg", "shotgun3.ogg", "shotgun4.ogg", "shotgun5.ogg", "shotgun6.ogg", "shotgun7.ogg" },
+    ["smg"] = { "smg1.ogg", "smg2.ogg", "smg3.ogg", "smg4.ogg", "smg5.ogg" },
+    ["ar2"] = { "sniper1.ogg", "sniper2.ogg", "sniper3.ogg", "sniper4.ogg", "sniper5.ogg", "sniper6.ogg" }, --sniper
+    --["tesla"] = { "", }, --Currently no Tesla Cannons work, so leaving this as-is
+    ["thunder"] = { "thundergun1.ogg", "thundergun2.ogg", "thundergun3.ogg", "thundergun4.ogg", "thundergun5.ogg", }
+}
+
+local weptypes = {
+    [""] = { "" },
+}
+
+hook.Add( "OnPlayerBought", "PurchaseSuccess", function( ply, price, ent ) --only for wallbuys, mysterybox will have to be handled differently
+    if timer.Exists( ply:SteamID().."timer" ) then return end
+    if ent != "wall_buys" then return end
+    local weptype = weptypes[ent:GetWepClass()] or ent:GetWepClass():GetHoldType()
+    local sounds = sounds[weptype]
+
+    if sounds then
+        local sound = table.Random(sounds)
+        timer.Create( ply:SteamID().."timer", 0.5, 1, function()
+            ply:EmitSound( "nz/"..character.."/weapon/"..sound)
+        end )
+    end
+end )
+
+util.AddNetworkString( "PurchaseSuccess" ) --only for wallbuys, mysterybox will have to be handled differently
 hook.Add( "OnPlayerBought", "PurchaseSuccess", function( ply, price, ent ) 
+    elseif allother.ent:GetWepClass() then
+        timer.Create( ply:SteamID().."timer", 0.1, 1, function() --All dialogue delays are done client-side
+		    net.Start( "PurchaseSuccess" )
+		    	net.WriteInt( math.random( 1, 6 ), 4 ) --There are 5 quotes from each character
+                net.WriteString( ent:GetWepClass() )
+		    net.Send( ply )
+	    end )
+    elseif machineguns.ent:GetWepClass() then --Monkey bombs
+            timer.Create( ply:SteamID().."timer", 0.1, 1, function() --All dialogue delays are done client-side
+			    net.Start( "PurchaseSuccess" )
+			    	net.WriteInt( math.random( 1,  ), 4 ) --There are 5 quotes from each character
+                    net.WriteString( "" )
+			    net.Send( ply )
+		    end )
 
+        elseif 
+        --ent:GetWepClass()
+    end
 end )
 
 util.AddNetworkString( "PurchaseFailure" )

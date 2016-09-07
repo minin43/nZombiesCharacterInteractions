@@ -7,7 +7,7 @@ hook.Add( "nzPlayerDowned", "", function( ply )
 				net.WriteInt( math.random( 1, 5 ), 4 ) --There are 5 quotes from each character
 			net.Send( ply )
 		end )
-	end )
+	end 
 end )
 
 util.AddNetworkString( "SayReviveUp" )
