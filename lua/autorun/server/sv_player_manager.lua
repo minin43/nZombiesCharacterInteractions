@@ -1,10 +1,11 @@
 
-local characters = { "", "", "", "" } --The 4 acceptable Nazi Zombie playermodels
+local characters = { ["Dempsey"] = "", ["Nikolai"] = "", ["Takeo"] = "", ["Richtofen"] = "" } --The 4 acceptable Nazi Zombie playermodels
 local validplayers = {}
 
 local function ValidModel( ply )
 	for k, v in pairs( characters ) do
 		if ply:GetModel() == v then 
+			ply.character = k
 			return true
 		end
 	end

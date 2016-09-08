@@ -1,20 +1,24 @@
---There's no need to check for an existing timer because nothing else has the capability of being run at the start of the game (unless you purposefully kill yourself using console commands, but fuck off)
-util.AddNetworkString( "SayNoPower" )
+
+local sounds = { 
+	["power"] = { "nopower1.ogg", "nopower2.ogg", "nopower3.ogg", "nopower4.ogg", "nopower5.ogg" }, 
+	["special"] = { "dog_spawned1.ogg", "dog_spawned2.ogg", "dog_spawned3.ogg", "dog_spawned4.ogg", "dog_spawned5.ogg" }
+}
+
 hook.Add( "OnGameBegin", "NoPower", function()
-	if table.Count( validplayers ) > 0 then
-		net.Start( "SayNoPower" )
-			net.WriteInt( math.random( 1, 5 ), 4 ) --There are 5 quotes from each character
-		net.Send( validplayers[math.random( 1, #validplayers)] )
+	local chosenone = table.Random( validplayers )
+	local sound = table.Random( sounds["power"] )
+	
+	if chosenone then
+		chosenone:EmitSound( "nz/"..chosenone.character.."/power/"..sound )
 	end
 end )
 
-util.AddNetworkString( "SayDogSpawn" )
 hook.Add( "OnRoundStart", "DogsSpawning", function()
-	if nzRound:IsSpecial() then
-		if table.Count( validplayers ) > 0 then
-			net.Start( "SayDogSpawn" )
-				net.WriteInt( math.random( 1, 5 ), 4 ) --There are 5 quotes from each character
-			net.Send( validplayers[math.random( 1, #validplayers)] )
-		end
+	if !nzRound:IsSpecial() then return end
+	local chosenone = table.Random( validplayers )
+	local sound = table.Random( sounds["special"] )
+	
+	if chosenone then
+		chosenone:EmitSound( "nz/"..chosenone.character.."/dog/"..sound )
 	end
 end )
