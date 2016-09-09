@@ -97,8 +97,10 @@ end )
 
 hook.Add( "nzPlayerBoughtBox", "BoxPurchaseSuccess", function( ply, wep ) --Mysterybox buy success
 	if timer.Exists( ply:SteamID().."timer" ) then return end
+	if !validmodel( ply ) then return end
 	local weptype = weptypes[wep] or wep:GetHoldType()
     local sounds = sounds[weptype]
+	
 
     if sounds then
         local sound = table.Random(sounds)

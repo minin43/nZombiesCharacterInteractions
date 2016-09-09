@@ -9,8 +9,7 @@ local sounds = {
 hook.Add( "OnPlayerGetPerk", "FERMENTED HERRING DIPPED IN CAT PISS", function( ply, id, machine )
     if !ply:IsPlayer() then return end
     if !validmodel( ply ) then return end
-
-    local sound = sounds[id]
+	local sound = sounds[id]
     if sound then
         if !timer.Exists( ply:SteamID().."timer" ) then
 		    timer.Create( ply:SteamID().."timer", 1, 1, function()
