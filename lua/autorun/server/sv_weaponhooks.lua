@@ -12,7 +12,8 @@ local sounds = {
     ["smg"] = { "smg1.ogg", "smg2.ogg", "smg3.ogg", "smg4.ogg", "smg5.ogg" },
     ["ar2"] = { "sniper1.ogg", "sniper2.ogg", "sniper3.ogg", "sniper4.ogg", "sniper5.ogg", "sniper6.ogg" }, --sniper
     --["tesla"] = { "", }, --Currently no Tesla Cannons work, so leaving this as-is
-    ["thunder"] = { "thundergun1.ogg", "thundergun2.ogg", "thundergun3.ogg", "thundergun4.ogg", "thundergun5.ogg", }
+    ["thunder"] = { "thundergun1.ogg", "thundergun2.ogg", "thundergun3.ogg", "thundergun4.ogg", "thundergun5.ogg" },
+	["teddy"] = { "teddy1.ogg", "teddy2.ogg", "teddy3.ogg", "teddy4.ogg", "teddy5.ogg" }
 }
 
 local weptypes = {
@@ -71,7 +72,9 @@ local weptypes = {
 	["khr_veresk"] 		= { "smg" },
 	--nZombie Weapons
 	["nz_bowie_knife"]	= { "bowie" },
-	["nz_monkey_bomb"] 	= { "monkey" }
+	["nz_monkey_bomb"] 	= { "monkey" },
+	--FUCKING TEDDY...
+	["nz_box_teddy"] = { "teddy" }
 	--[""] = { "" },
 }
 
@@ -85,19 +88,25 @@ hook.Add( "OnPlayerBought", "PurchaseSuccess", function( ply, price, ent ) --Do 
         local sound = table.Random(sounds)
         timer.Create( ply:SteamID().."timer", 1, 1, function()
             ply:EmitSound( "nz/"..ply.character.."/weapons/"..sound )
+			timer.Simple( 5, function()
+				timer.Remove( ply:SteamID().."timer" )
+			end )
         end )
     end
 end )
 
-hook.Add( "nzPlayerBoughtBox", "BoxPurchaseSuccess", function( ply, wep )
+hook.Add( "nzPlayerBoughtBox", "BoxPurchaseSuccess", function( ply, wep ) --Mysterybox buy success
 	if timer.Exists( ply:SteamID().."timer" ) then return end
-	local weptype = weptypes[ent:GetWepClass()] or ent:GetWepClass():GetHoldType()
+	local weptype = weptypes[wep] or wep:GetHoldType()
     local sounds = sounds[weptype]
 
     if sounds then
         local sound = table.Random(sounds)
         timer.Create( ply:SteamID().."timer", 1, 1, function()
             ply:EmitSound( "nz/"..ply.character.."/weapons/"..sound )
+			timer.Simple( 5, function()
+				timer.Remove( ply:SteamID().."timer" )
+			end )
         end )
     end
 end )
