@@ -1,5 +1,11 @@
 
-local characters = { ["Dempsey"] = "", ["Nikolai"] = "", ["Takeo"] = "", ["Richtofen"] = "" } --The 4 acceptable Nazi Zombie playermodels
+local characters = { 
+	["Dempsey"] = "players/dempsey/dempsey.mdl", 
+	["Nikolai"] = "players/nikolai/nikolai.mdl", 
+	["Takeo"] = "players/takeo/takeo.mdl", 
+	["Richtofen"] = "players/richtofen/richtofen.mdl" 
+
+}
 local validplayers = {}
 
 local function ValidModel( ply )
