@@ -2,6 +2,7 @@
 local sounds = {
 	["close"] = { "close1.ogg", "close2.ogg", "close3.ogg", "close4.ogg", "close5.ogg", "close6.ogg", "close7.ogg" },
 	["damaged"] = { "damaged1.ogg", "damaged2.ogg", "damaged3.ogg", "damaged4.ogg", "damaged5.ogg" },
+	["dog"] = { "dog_killed1.ogg", "dog_killed2.ogg", "dog_killed3.ogg", "dog_killed4.ogg", "dog_killed5.ogg", "dog_killed6.ogg" },
 	["explosion"] = { "explosion1.ogg", "explosion2.ogg", "explosion3.ogg", "explosion4.ogg", "explosion5.ogg" },
 	["flame"] = { "flame1.ogg", "flame2.ogg", "flame3.ogg", "flame4.ogg", "flame5.ogg" },
 	["headshot"] = { "headshot1.ogg", "headshot2.ogg", "headshot3.ogg", "headshot4.ogg", "headshot5.ogg", "headshot6.ogg", "headshot7.ogg", "headshot8.ogg", "headshot9.ogg", "headshot10.ogg" },
@@ -10,15 +11,15 @@ local sounds = {
 	["raygun"] = { "raygun_kill1.ogg", "raygun_kill2.ogg", "raygun_kill3.ogg", "raygun_kill4.ogg", "raygun_kill5.ogg" },
 	["streak"] = { "streak1.ogg", "streak2.ogg", "streak3.ogg", "streak4.ogg", "streak5.ogg", "streak6.ogg", "streak7.ogg", 
 					"streak8.ogg", "streak9.ogg", "streak10.ogg", "streak11.ogg", "streak12.ogg", "streak13.ogg", "streak14.ogg" },
-	["thundergun"] = { "thundergun_kill1.ogg", "thundergun_kill2.ogg", "thundergun_kill3.ogg", "thundergun_kill4.ogg", "thundergun_kill5.ogg", }
+	["thundergun"] = { "thundergun_kill1.ogg", "thundergun_kill2.ogg", "thundergun_kill3.ogg", "thundergun_kill4.ogg", "thundergun_kill5.ogg" }
 }
 
 hook.Add( "OnZombieKilled", "VariousZombieKills", function( zombie, ply, dmginfo, hitgroup )
-	if ply:IsPlayer() and !timer.Exists( ply:SteamID().."timer" ) and zombie:IsValidZombie() then
+	if ply:IsPlayer() and !timer.Exists( ply:SteamID().."timer" ) and zombie:IsValidZombie() and validmodel( ply ) then
 		local sound
 		ply.killstreak = ply.killstreak + 1
 		if zombie == "nz_zombie_walker" then
-			if table.HasValue( validplayers, ply ) then
+			--if table.HasValue( validplayers, ply ) then
 				--Start regular zombie dialogue
 				--Low player health first...
 				if ply:Health() < ply:GetMaxHealth() then 
@@ -137,9 +138,18 @@ hook.Add( "OnZombieKilled", "VariousZombieKills", function( zombie, ply, dmginfo
 					return
 				end
 				--End regular zombie dialogue
-			end
+			--end
 		elseif zombie == "nz_zombie_special_dog" then
-			
+			local randomnumber = math.random( 1, 4 )
+			if randomnumber != 1 then return end
+			sound = table.Random( sounds["dog"] )
+			timer.Create( ply:SteamID().."timer", 0.5, 1, function()
+				ply:EmitSound( "nz/"..ply.character.."/dog/"..sound )
+				timer.Simple( 5, function()
+					timer.Remove( ply:SteamID().."timer" )
+				end )
+			end )
+			return
 		end
 	end
 end )

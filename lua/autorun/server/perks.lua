@@ -3,7 +3,7 @@ local sounds = {
     ["speed"] = { "speedcola.ogg" },
     ["revive"] = { "revive.ogg" },
     ["dtap"] = { "doubletap.ogg" },
-    ["dtap2"] = { "doubletap.ogg" },
+    ["dtap2"] = { "doubletap.ogg" }
  }
 
 hook.Add( "OnPlayerGetPerk", "FERMENTED HERRING DIPPED IN CAT PISS", function( ply, id, machine )
