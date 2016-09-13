@@ -1,4 +1,3 @@
-
 local sounds = { 
     ["bowie"] = { "bowie1.ogg", "bowie2.ogg", "bowie3.ogg", "bowie4.ogg", "bowie5.ogg" },
     ["pistol"] = { "crappy1.ogg", "crappy2.ogg", "crappy3.ogg", "crappy4.ogg", "crappy5.ogg", "crappy6.ogg" }, --crappy
@@ -13,7 +12,8 @@ local sounds = {
     ["ar2"] = { "sniper1.ogg", "sniper2.ogg", "sniper3.ogg", "sniper4.ogg", "sniper5.ogg", "sniper6.ogg" }, --sniper
     --["tesla"] = { "", }, --Currently no Tesla Cannons work, so leaving this as-is
     ["thunder"] = { "thundergun1.ogg", "thundergun2.ogg", "thundergun3.ogg", "thundergun4.ogg", "thundergun5.ogg" },
-	["teddy"] = { "teddy1.ogg", "teddy2.ogg", "teddy3.ogg", "teddy4.ogg", "teddy5.ogg" }
+	["teddy"] = { "teddy1.ogg", "teddy2.ogg", "teddy3.ogg", "teddy4.ogg", "teddy5.ogg" },
+	["no"] = { "no_money1.ogg", "no_money2.ogg", "no_money3.ogg" }
 }
 
 local weptypes = {
@@ -81,6 +81,7 @@ local weptypes = {
 hook.Add( "OnPlayerBought", "PurchaseSuccess", function( ply, price, ent ) --Do I want this? This might get annoying for wallbuys
     if timer.Exists( ply:SteamID().."timer" ) then return end
     if ent != "wall_buys" then return end
+	if !validmodel( ply ) then return end
     local weptype = weptypes[ent:GetWepClass()] or ent:GetWepClass():GetHoldType()
     local sounds = sounds[weptype]
 
@@ -100,7 +101,6 @@ hook.Add( "nzPlayerBoughtBox", "BoxPurchaseSuccess", function( ply, wep ) --Myst
 	if !validmodel( ply ) then return end
 	local weptype = weptypes[wep] or wep:GetHoldType()
     local sounds = sounds[weptype]
-	
 
     if sounds then
         local sound = table.Random(sounds)
@@ -113,8 +113,20 @@ hook.Add( "nzPlayerBoughtBox", "BoxPurchaseSuccess", function( ply, wep ) --Myst
     end
 end )
 
-hook.Add( "OnPlayerBuyBox", "NoCash", function( ply, outcome )
-	--If player can't afford box...
+hook.Add( "OnPlayerBuy", "NoCash", function( ply, amount, ent, func )
+	if timer.Exists( ply:SteamID().."timer" ) then return end
+	if !validmodel( ply ) then return end
+	if ent != "random_box" then return end
+
+	if !ply:CanAfford( amount ) then
+		local sound = table.Random(sounds["no"])
+        timer.Create( ply:SteamID().."timer", 1, 1, function()
+            ply:EmitSound( "nz/"..ply.character.."/weapons/"..sound )
+			timer.Simple( 5, function()
+				timer.Remove( ply:SteamID().."timer" )
+			end )
+        end )
+	end
 end )
 --[[
 util.AddNetworkString( "PurchaseSuccess" ) --only for wallbuys, mysterybox will have to be handled differently
