@@ -1,4 +1,3 @@
-
 hook.Add( "OnAllEasterEggsFound", "SongUnlocked", function( ply, ent )
 	if !validmodel( ply ) then return end
 	if !timer.Exists( ply:SteamID().."timer" ) then
