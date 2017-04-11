@@ -2,7 +2,7 @@ local sounds = { "ohshit1.ogg", "ohshit2.ogg", "ohshit3.ogg", "ohshit4.ogg", "oh
                 "ohshit9.ogg", "ohshit10.ogg", "ohshit11.ogg", "ohshit12.ogg", "ohshit13.ogg", "ohshit14.ogg", "ohshit15.ogg", "ohshit16.ogg" }
 
 hook.Add( "EntityTakeDamage", "OH SHIT", function( ply, dmginfo)
-    if !ply:IsPlayer() or dmginfo:GetAttacker() == ply or dmginfo:IsFallDamage() then return end
+    if !ply:IsPlayer() or IsPlayer( dmginfo:GetAttacker() ) or dmginfo:IsFallDamage() then return end
     local sound = table.Random( sounds )
     
     if !timer.Exists( ply:SteamID().."damaged" ) then

@@ -1,4 +1,4 @@
-local validplayers = {}
+validplayers = {}
 
 hook.Add( "OnGameBegin", "PlayerCheck", function()
 	for k, v in pairs( player.GetAll() ) do
@@ -26,20 +26,22 @@ local sounds = {
 }
 
 hook.Add( "OnGameBegin", "NoPower", function()
-	local chosenone = table.Random( validplayers )
+	local chooseone = table.Random( validplayers )
 	local sound = table.Random( sounds["power"] )
 	
-	if chosenone then
-		chosenone:EmitSound( "nz/"..chosenone.character.."/power/"..sound )
+	if chooseone then
+		timer.Simple( 3, function()
+			chooseone:EmitSound( "nz/"..chooseone.character.."/power/"..sound )
+		end )
 	end
 end )
 
 hook.Add( "OnRoundStart", "DogsSpawning", function()
 	if !nzRound:IsSpecial() then return end
-	local chosenone = table.Random( validplayers )
+	local chooseone = table.Random( validplayers )
 	local sound = table.Random( sounds["special"] )
 	
-	if chosenone then
-		chosenone:EmitSound( "nz/"..chosenone.character.."/dog/"..sound )
+	if chooseone then
+		chooseone:EmitSound( "nz/"..chooseone.character.."/dog/"..sound )
 	end
 end )

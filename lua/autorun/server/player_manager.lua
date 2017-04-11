@@ -1,12 +1,12 @@
 
 local characters = { 
-	["Dempsey"] = "players/dempsey/dempsey.mdl", 
-	["Nikolai"] = "players/nikolai/nikolai.mdl", 
-	["Takeo"] = "players/takeo/takeo.mdl", 
-	["Richtofen"] = "players/richtofen/richtofen.mdl" 
+	[ "dempsey" ] = "players/dempsey/dempsey.mdl", 
+	[ "nikolai" ] = "players/nikolai/nikolai.mdl", 
+	[ "takeo" ] = "players/takeo/takeo.mdl", 
+	[ "richtofen" ] = "players/richtofen/richtofen.mdl" 
 }
 
-local function ValidModel( ply )
+function ValidModel( ply )
 	for k, v in pairs( characters ) do
 		if ply:GetModel() == v then 
 			ply.character = k
