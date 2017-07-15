@@ -1,0 +1,15 @@
+if engine.ActiveGamemode() != "nzombies" then return end
+
+print( "Loading nZombies Character Interactions Addon!")
+include( "character_interactions/player_manager.lua" )
+include( "character_interactions/ammo.lua" )
+include( "character_interactions/easteregg.lua" )
+include( "character_interactions/killstreak_manager.lua" )
+include( "character_interactions/pap.lua" )
+include( "character_interactions/perks.lua" )
+include( "character_interactions/player_damaged.lua" )
+include( "character_interactions/powerups.lua" )
+include( "character_interactions/revive.lua" )
+include( "character_interactions/roundstart.lua" )
+include( "character_interactions/weaponbought.lua" )
+include( "character_interactions/zombiekill.lua" )

@@ -1,5 +1,0 @@
-include( "cl_killhooks.lua" )
-include( "cl_player_manager.lua" )
-include( "cl_revivehooks.lua" )
-include( "cl_roundhooks" )
-include( "cl_weaponhooks.lua" )
